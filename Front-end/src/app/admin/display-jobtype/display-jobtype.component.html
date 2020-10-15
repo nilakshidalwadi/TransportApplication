@@ -1,0 +1,59 @@
+<div class="row mb-2">
+  <div class="col-12 text-right">
+    <button type="button" (click)="add()" class="btn m-1 btn-outline-primary">
+      Add Job Type
+    </button>
+  </div>
+</div>
+<div class="row">
+  <div class="col-12">
+    <table
+      #dtTableElement
+      class="table table-striped table-bordered m-0"
+      datatable
+      [dtOptions]="dtOptions"
+      [dtTrigger]="dtTrigger"
+      style="width: 100%;"
+    >
+      <thead>
+        <tr>
+          <th>Job Type</th>
+          <th>Report By</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let job of jobList">
+          <td>{{ job.jType }}</td>
+          <td>{{ job.reportBy }}</td>
+
+          <td>
+            <button
+              type="button"
+              [attr.update-job]="job.jID"
+              class="btn m-1 btn-outline-info"
+            >
+              Edit
+            </button>
+            <button
+              type="button"
+              [attr.delete-job]="job.jID"
+              class="btn m-1 btn-outline-danger"
+              *ngIf="job.active"
+            >
+              Delete
+            </button>
+            <button
+              type="button"
+              [attr.active-job]="job.jID"
+              class="btn m-1 btn-outline-success"
+              *ngIf="!job.active"
+            >
+              Active
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

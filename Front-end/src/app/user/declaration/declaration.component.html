@@ -1,0 +1,67 @@
+<div class="row">
+  <div class="col-12">
+    <form autocomplete="off" [formGroup]="declareForm">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title text-center">Declaration</h5>
+          <table class="card-text text-left table table-borderless">
+            <tr>
+              <td>
+                I,
+                <Span style="text-decoration: underline;">{{ userName }}</Span>
+                HERE BY DECLARE that I AM FIT FOR DUTY AND ABLE TO MEET MY Below
+                work requirements
+              </td>
+            </tr>
+            <tr>
+              <td>I am medically fit to operate the Equipment/Vehicle</td>
+            </tr>
+            <tr>
+              <td>
+                I have completed the minimum rest required during the last 24
+                hrs incl continuous 7 hrs. rest period
+              </td>
+            </tr>
+            <tr>
+              <td>
+                I hold a current and valid License for the Equipment/Vehicle
+              </td>
+            </tr>
+            <tr>
+              <td>
+                I am not suffering the effects of Lack of sleep, drugs
+                (Prescription or (illicit) or Alcohol ) that may prevent me from
+                undertaking my work duties
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="form-group">
+                  <input
+                    type="checkbox"
+                    value=""
+                    id="defaultCheck1"
+                    formControlName="declare"
+                  />
+                  <label for="defaultCheck1">
+                    &nbsp;I Agree
+                  </label>
+                </div>
+              </td>
+            </tr>
+          </table>
+
+          <button
+            class="btn btn-lg btn-primary "
+            type="submit"
+            [disabled]="declareForm.invalid"
+            (click)="next()"
+            style="box-align: center"
+          >
+            Next
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

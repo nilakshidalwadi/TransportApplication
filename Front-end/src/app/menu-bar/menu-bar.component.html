@@ -1,0 +1,115 @@
+<div
+  [ngClass]="{
+    'mb-3': auth.loggedIn
+  }"
+>
+  <nav
+    class="navbar navbar-expand-lg navbar-dark bg-dark"
+    *ngIf="router.url != '/login'"
+  >
+    <a *ngIf="auth.loggedIn" class="navbar-brand" [routerLink]="['/']">
+      Home
+    </a>
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-toggle="collapse"
+      data-target="#navbarNavAltMarkup"
+      aria-controls="navbarNavAltMarkup"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+        <li
+          *ngIf="auth.isAdmin"
+          class="nav-item"
+          [class.active]="router.isActive('/report', true)"
+        >
+          <a class="nav-link" [routerLink]="['/report']">
+            Report
+          </a>
+        </li>
+        <li
+          *ngIf="auth.isAdmin || auth.isUser"
+          class="nav-item"
+          [class.active]="router.isActive('/docs', true)"
+        >
+          <a class="nav-link" [routerLink]="['/docs']">
+            Documents
+          </a>
+        </li>
+        <li
+          *ngIf="auth.isAdmin"
+          class="nav-item"
+          [class.active]="router.isActive('/jobsheetimg', true)"
+        >
+          <a class="nav-link" [routerLink]="['/jobsheetimg']">
+            Job Sheet Images
+          </a>
+        </li>
+
+        <li class="nav-item dropdown" *ngIf="auth.isAdmin">
+          <a
+            class="nav-link dropdown-toggle"
+            href="#"
+            id="navbarDropdown"
+            role="button"
+            data-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false"
+          >
+            Menu
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" [routerLink]="['/users']">Users</a>
+
+            <div class="dropdown-divider"></div>
+
+            <a class="dropdown-item" [routerLink]="['/displaytrucks']">
+              Trucks
+            </a>
+            <a class="dropdown-item" [routerLink]="['/displaytruckServices']">
+              Truck Services
+            </a>
+
+            <div class="dropdown-divider"></div>
+
+            <a class="dropdown-item" [routerLink]="['/displayjobtype']">
+              Job Type
+            </a>
+            <a class="dropdown-item" [routerLink]="['/displayzonetype']">
+              Zone Type
+            </a>
+
+            <div class="dropdown-divider"></div>
+
+            <a class="dropdown-item" [routerLink]="['add/trip']">
+              Add Trip
+            </a>
+          </div>
+        </li>
+      </ul>
+      <div class="my-2 my-lg-0">
+        <button
+          class="btn btn-success my-2 my-sm-0"
+          (click)="login()"
+          type="submit"
+          *ngIf="!auth.loggedIn"
+        >
+          Login
+        </button>
+        <button
+          class="btn btn-danger my-2 my-sm-0"
+          (click)="logout()"
+          type="submit"
+          *ngIf="auth.loggedIn"
+        >
+          {{ auth.isAdmin ? "Logout" : "Not you?" }}
+        </button>
+      </div>
+    </div>
+  </nav>
+</div>

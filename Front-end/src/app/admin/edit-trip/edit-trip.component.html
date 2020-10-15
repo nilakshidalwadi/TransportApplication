@@ -1,0 +1,313 @@
+<div class="row">
+  <form
+    class="offset-sm-1 col-sm-10"
+    autocomplete="off"
+    [formGroup]="editTripForm"
+    (ngSubmit)="updateTrip()"
+    *ngIf="editTripForm"
+  >
+    <div class="form-group">
+      <label for="jType">Job Type:</label>
+      <select class="form-control" formControlName="jType" id="jType">
+        <option *ngFor="let job of jobList" [value]="job.jID">
+          {{ job.jType }}
+        </option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="regoNum">Rego Number:</label>
+      <select class="form-control" formControlName="truckID" id="regoNum">
+        <option *ngFor="let truck of regoList" [value]="truck.tID">
+          {{ truck.regoNummber }}
+        </option>
+      </select>
+    </div>
+    <div class="form-group" *ngIf="actionType == 'Add'">
+      <label for="userName">Driver Name:</label>
+      <select class="form-control" formControlName="userID" id="userName">
+        <option *ngFor="let user of userList" [value]="user.uID">
+          {{ user.uName }}
+        </option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="sKm">Start Km:</label>
+      <input
+        class="form-control"
+        id="sKm"
+        formControlName="sKm"
+        type="number"
+      />
+    </div>
+    <div class="form-group">
+      <label for="eKm">End Km:</label>
+      <input
+        class="form-control"
+        id="eKm"
+        formControlName="eKm"
+        type="number"
+      />
+    </div>
+    <div class="form-group">
+      <label for="wHrs">Working Hours:</label>
+      <input
+        class="form-control"
+        id="wHrs"
+        formControlName="wHrs"
+        type="text"
+      />
+    </div>
+    <div *ngIf="editTripForm.get('jobBy').value == 'Pallet'">
+      <div class="form-group">
+        <label for="loadNum">
+          Total Number of Load:
+        </label>
+        <input
+          class="form-control"
+          id="loadNum"
+          formControlName="loadNum"
+          type="number"
+          placeholder="Load Number"
+        />
+      </div>
+    </div>
+    <div
+      class="container-fluid"
+      formArrayName="palletDetails"
+      *ngIf="editTripForm.get('jobBy').value == 'Pallet'"
+    >
+      <div
+        *ngFor="let item of palletDetails.controls; let pointIndex = index"
+        [formGroupName]="pointIndex"
+      >
+        <div class="row">
+          <div class="col-12 px-2 font-weight-bold">
+            <u>Details for load {{ pointIndex + 1 }}:</u>
+          </div>
+        </div>
+        <div class="row">
+          <div class="form-group col-6 px-2">
+            <label for="loadImage mb-0">Pallet Load Sheet Image:</label>
+            <div class="input-file-container w-100">
+              <app-attachments
+                [id]="'loadImage_' + (pointIndex + 1)"
+                [fileFilter]="['image']"
+                (attachmentSelected)="
+                  fileChange($event, 'loadImage_' + (pointIndex + 1))
+                "
+              ></app-attachments>
+            </div>
+          </div>
+          <div class="form-group col-6 px-2">
+            <label for="drop_num_{{ pointIndex }}" style="width: 100%;">
+              Total number of Drops:
+              <input
+                class="form-control"
+                id="drop_num_{{ pointIndex }}"
+                formControlName="dropNum"
+                type="number"
+              />
+            </label>
+          </div>
+          <div
+            class="form-group col-6 px-2"
+            *ngIf="item.get('dropNum').value > 0"
+          >
+            <label for="extra_drop_num_{{ pointIndex }}" style="width: 100%;">
+              Extra number of Drops:
+              <input
+                class="form-control"
+                id="extra_drop_num_{{ pointIndex }}"
+                type="number"
+                formControlName="extraDropNum"
+              />
+            </label>
+          </div>
+          <div
+            class="form-group col-6 px-2"
+            *ngIf="item.get('dropNum').value > 0"
+          >
+            <label for="extra_drop_rate_{{ pointIndex }}" style="width: 100%;">
+              Rate per extra drop:
+              <input
+                class="form-control"
+                id="extra_drop_rate_{{ pointIndex }}"
+                type="number"
+                formControlName="extraRate"
+              />
+            </label>
+          </div>
+        </div>
+        <div
+          *ngIf="dropDetails(item.get('groupIndex').value).controls.length != 0"
+          [formGroupName]="'dropDetail'"
+        >
+          <div
+            class="row"
+            *ngFor="
+              let dropItem of dropDetails(item.get('groupIndex').value)
+                .controls;
+              let dropIndex = index
+            "
+            [formGroupName]="dropIndex"
+          >
+            <div class="col-12 px-2">
+              <u>
+                Details for load {{ pointIndex + 1 }} drop {{ dropIndex + 1 }}:
+              </u>
+            </div>
+            <div class="form-group col-12 px-2">
+              <label for="zone_{{ pointIndex }}_{{ dropIndex }}">Zone:</label>
+              <input
+                class="form-control"
+                type="text"
+                (keyup)="
+                  onZoneSearch($event, 'zone_' + pointIndex + '_' + dropIndex)
+                "
+                placeholder="Search zone here..."
+              />
+              <br />
+              <select
+                class="form-control"
+                formControlName="zone"
+                id="zone_{{ pointIndex }}_{{ dropIndex }}"
+              >
+                <option *ngFor="let zone of zoneList" [value]="zone.zID">
+                  <span>{{ zone.zNumber }} : {{ zone.zName }}</span>
+                </option>
+              </select>
+            </div>
+            <div class="form-group col-6 px-2">
+              <label
+                for="nd_pallet_{{ pointIndex }}_{{ dropIndex }}"
+                style="width: 100%;"
+              >
+                Dry Pallet:
+                <input
+                  class="form-control"
+                  id="nd_pallet_{{ pointIndex }}_{{ dropIndex }}"
+                  formControlName="nDpallet"
+                  type="number"
+                />
+              </label>
+            </div>
+            <div class="form-group col-6 px-2">
+              <label
+                for="rd_pallet_{{ pointIndex }}_{{ dropIndex }}"
+                style="width: 100%;"
+              >
+                Dry Pallet Rate:
+                <input
+                  class="form-control"
+                  id="rd_pallet_{{ pointIndex }}_{{ dropIndex }}"
+                  formControlName="rDpallet"
+                  type="number"
+                />
+              </label>
+            </div>
+            <div class="form-group col-6 px-2">
+              <label
+                for="nf_pallet_{{ pointIndex }}_{{ dropIndex }}"
+                style="width: 100%;"
+              >
+                Fridge Pallet:
+                <input
+                  class="form-control"
+                  id="nf_pallet_{{ pointIndex }}_{{ dropIndex }}"
+                  formControlName="nFpallet"
+                  type="number"
+                />
+              </label>
+            </div>
+            <div class="form-group col-6 px-2">
+              <label
+                for="rf_pallet_{{ pointIndex }}_{{ dropIndex }}"
+                style="width: 100%;"
+              >
+                Fridge Pallet Rate:
+                <input
+                  class="form-control"
+                  id="rf_pallet_{{ pointIndex }}_{{ dropIndex }}"
+                  formControlName="rFpallet"
+                  type="number"
+                />
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="editTripForm.get('jobBy').value == 'Load'">
+      <div class="form-group">
+        <label for="fLoad">Full load:</label>
+        <input
+          class="form-control"
+          id="fLoad"
+          formControlName="fLoad"
+          type="number"
+        />
+      </div>
+      <div class="form-group">
+        <label for="load">Load:</label>
+        <input
+          class="form-control"
+          id="load"
+          formControlName="load"
+          type="number"
+        />
+      </div>
+      <div class="form-group">
+        <label for="delivery">Delivery:</label>
+        <input
+          class="form-control"
+          id="delivery"
+          formControlName="delivery"
+          type="number"
+        />
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="sjTime">Job Start Time:</label>
+      <dl-date-time-picker
+        id="sjTime"
+        startView="day"
+        maxView="year"
+        minView="minute"
+        minuteStep="15"
+        formControlName="sjTime"
+      >
+      </dl-date-time-picker>
+    </div>
+    <div class="form-group">
+      <label for="ejTime">Job End Time:</label>
+      <dl-date-time-picker
+        id="ejTime"
+        startView="day"
+        maxView="year"
+        minView="minute"
+        minuteStep="15"
+        formControlName="ejTime"
+      >
+      </dl-date-time-picker>
+    </div>
+
+    <div class="form-group">
+      <label for="jobSheetImg">Job Sheet Image:</label>
+      <div class="input-file-container w-100">
+        <app-attachments
+          [id]="'jobSheet'"
+          [fileFilter]="['image']"
+          (attachmentSelected)="fileChange($event, 'jobSheet')"
+        ></app-attachments>
+      </div>
+    </div>
+    <button
+      class="btn btn-lg btn-primary btn-block"
+      type="submit"
+      [disabled]="!editTripForm.valid"
+    >
+      {{ actionType }}
+    </button>
+  </form>
+</div>

@@ -1,0 +1,66 @@
+/*
+body {
+  font-family: 'Open sans', 'Segoe UI', 'Segoe WP', Helvetica, Arial, sans-serif;
+  color: #7f8c9a;
+  background: #fcfdfd;
+}
+*/
+
+.text-decoration-underline {
+  text-decoration: underline !important;
+}
+
+.dropdown-item {
+  cursor: pointer;
+}
+
+.font-weight-600 {
+  font-weight: 600 !important;
+}
+
+.input-file-container {
+  position: relative;
+  width: 225px;
+}
+.input-file-trigger {
+  display: block;
+  padding: 14px 45px;
+  background: #39d2b4;
+  color: #fff;
+  font-size: 1em;
+  transition: all 0.4s;
+  cursor: pointer;
+}
+.input-file {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 225px;
+  opacity: 0;
+  padding: 14px 0;
+  cursor: pointer;
+}
+.input-file:hover + .input-file-trigger,
+.input-file:focus + .input-file-trigger,
+.input-file-trigger:hover,
+.input-file-trigger:focus {
+  background: #34495e;
+  color: #39d2b4;
+}
+
+.file-return {
+  margin: 0;
+}
+.file-return:not(:empty) {
+  margin: 1em 0;
+}
+.file-return {
+  font-style: italic;
+  font-size: 0.9em;
+  font-weight: bold;
+}
+.file-return:not(:empty):before {
+  content: 'Selected file: ';
+  font-style: normal;
+  font-weight: normal;
+}

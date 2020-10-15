@@ -1,0 +1,82 @@
+<div class="row">
+  <form
+    class="offset-sm-1 col-sm-10"
+    autocomplete="off"
+    [formGroup]="truckServiceForm"
+    (ngSubmit)="addTruckService()"
+    *ngIf="truckServiceForm"
+  >
+    <div class="form-group">
+      <label for="tID">Rego Number List:</label>
+      <select class="form-control" formControlName="tID" id="tID">
+        <option *ngFor="let truck of regoList" [value]="truck.tID">
+          {{ truck.regoNummber }}
+        </option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="sDate">Service Date: </label>
+      <input
+        class="form-control"
+        id="sDate"
+        formControlName="sDate"
+        type="date"
+      />
+    </div>
+    <div class="form-group">
+      <label for="sKm">Service Kilometers:</label>
+      <input
+        class="form-control"
+        id="sKm"
+        formControlName="sKm"
+        type="number"
+        placeholder="Service Kilometers"
+      />
+    </div>
+    <div class="form-group">
+      <label for="sFrom">Service Company Name:</label>
+      <input
+        class="form-control"
+        id="sFrom"
+        formControlName="sFrom"
+        type="text"
+        placeholder="Service Company Name"
+      />
+    </div>
+    <div class="form-group">
+      <label for="sNextDueDate">Service Due Date: </label>
+      <input
+        class="form-control"
+        id="sNextDueDate"
+        formControlName="sNextDueDate"
+        type="date"
+      />
+    </div>
+    <div class="form-group">
+      <label for="sNextDueKm">Service Due Kilometers:</label>
+      <input
+        class="form-control"
+        id="sNextDueKm"
+        formControlName="sNextDueKm"
+        type="number"
+        placeholder="Service Due Kilometers"
+      />
+    </div>
+    <div class="form-group">
+      <label for="sDesc">Service Description: </label>
+      <textarea
+        class="form-control"
+        rows="3"
+        id="sDesc"
+        formControlName="sDesc"
+      ></textarea>
+    </div>
+    <button
+      class="btn btn-lg btn-primary btn-block"
+      type="submit"
+      [disabled]="!truckServiceForm.valid"
+    >
+      {{ serviceType }}
+    </button>
+  </form>
+</div>

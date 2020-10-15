@@ -1,0 +1,16 @@
+.form-signin {
+  position: absolute;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+}
+
+.logo-img {
+  border: 1px solid #00a1ad;
+  border-radius: 50%;
+}
+
+.close {
+  cursor: pointer;
+}

@@ -1,0 +1,41 @@
+{
+  "currentConfig": "production",
+  "development": {
+    "config_id": "development",
+    "app_name": "jk-sandhu-api",
+    "node_port": 4001,
+    "database": {
+      "connectionLimit": 100,
+      "host": "localhost",
+      "user": "root",
+      "password": "1234",
+      "database": "truckdb"
+    },
+    "certificate": {
+      "cert": "./cert/certificate.cert",
+      "key": "./cert/privatekey.key"
+    },
+    "secretKey": "truck-app-qwerty",
+    "uploadFilePath": "./uploads",
+    "tokenValidity": "13h"
+  },
+  "production": {
+    "config_id": "production",
+    "app_name": "jk-sandhu-api",
+    "node_port": 4001,
+    "database": {
+      "connectionLimit": 100,
+      "host": "localhost",
+      "user": "root",
+      "password": "1234",
+      "database": "truckdb"
+    },
+    "certificate": {
+      "cert": "./cert/certificate.cert",
+      "key": "./cert/privatekey.key"
+    },
+    "secretKey": "truck-app-qwerty",
+    "uploadFilePath": "./uploads",
+    "tokenValidity": "13h"
+  }
+}

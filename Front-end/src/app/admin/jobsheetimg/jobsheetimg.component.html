@@ -1,0 +1,51 @@
+<div class="row mb-2">
+  <div class="col-12">
+    <div id="accordion">
+      <div class="card">
+        <div class="card-header px-3">
+          <a class="card-link" data-toggle="collapse" href="#collapseOne">
+            Job Sheet Images
+          </a>
+        </div>
+        <div id="collapseOne" class="collapse show" data-parent="#accordion">
+          <div class="card-body">
+            <form
+              class="row"
+              autocomplete="off"
+              [formGroup]="jobsheetimg"
+              (ngSubmit)="downloadFIlteredReport()"
+            >
+              <div class="form-group col-6 col-md-6 px-2">
+                <label for="sDate">Start Date: </label>
+                <input
+                  class="form-control"
+                  id="sDate"
+                  formControlName="sDate"
+                  type="date"
+                />
+              </div>
+              <div class="form-group col-6 col-md-6 px-2">
+                <label for="eDate">End Date: </label>
+                <input
+                  class="form-control"
+                  id="eDate"
+                  formControlName="eDate"
+                  type="date"
+                />
+              </div>
+              <div class="col-12 text-center">
+                <button
+                  class="btn btn-primary"
+                  type="submit"
+                  [disabled]="!jobsheetimg.valid"
+                >
+                  Download Images
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

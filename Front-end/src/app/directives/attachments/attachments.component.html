@@ -1,0 +1,193 @@
+<div class="row attachment" *ngIf="!isReadOnly">
+  <span
+    class="col-12 permission-error"
+    *ngIf="!isCameraParemission && allowCamera == 1"
+  >
+    {{ cameraErrorMsg }}
+  </span>
+  <span class="col-12 permission-error" *ngIf="cameraStreamErrorMsg">
+    {{ cameraStreamErrorMsg }}
+  </span>
+  <div
+    [ngClass]="{
+      'col-md-3': allowUpload == 1,
+      'col-md-12': allowUpload == 0
+    }"
+    *ngIf="isCameraParemission && allowCamera == 1"
+  >
+    <button
+      type="button"
+      class="btn btn-xs attachment-take-photo-btn"
+      (click)="openCamera($event)"
+      [disabled]="clickImage.loading"
+    >
+      Take a photo
+    </button>
+  </div>
+  <div
+    class="upload-container w-100 text-center"
+    [ngClass]="{
+      'col-md-9': isCameraParemission,
+      'col-md-12': !isCameraParemission
+    }"
+    *ngIf="allowUpload == 1"
+  >
+    <div
+      draggable="true"
+      [class]="dragAreaClass"
+      [ngClass]="{ 'invalid-file': !isValid }"
+      (click)="myAttachments.click()"
+    >
+      <strong> Choose a file(s) </strong> or drag it here.
+      <input
+        type="file"
+        #myAttachments
+        [multiple]="maxFiles == -1 || maxFiles > 1"
+        (change)="onFileChange(myAttachments.files)"
+        style="display:none"
+        [accept]="allowedFiles.accept"
+      />
+    </div>
+  </div>
+</div>
+<div class="row attachment" *ngIf="progress > 0 && progress < 100">
+  <div class="col-md-12">
+    <div class="progress">
+      <div
+        class="progress-bar progress-bar-striped progress-bar-animated"
+        role="progressbar"
+        [style.width]="progress + '%'"
+        aria-valuenow="100"
+        aria-valuemin="0"
+        aria-valuemax="100"
+      ></div>
+    </div>
+  </div>
+  <!-- <span class="upload" *ngIf="progress > 0"> {{ progress }}% </span> -->
+</div>
+<div class="row error attachment" *ngIf="errors.length > 0">
+  <ul>
+    <li *ngFor="let err of errors">{{ err }}</li>
+  </ul>
+</div>
+<div class="row attachment">
+  <div class="col-md-12">
+    <span class="no-attachments" *ngIf="isReadOnly && totalFiles < 1">
+      No attachment(s) to display
+    </span>
+    <div class="scrolling-wrapper">
+      <div
+        class="card m-1 rounded"
+        *ngFor="let file of fileList"
+        [hidden]="file.deleted"
+        [ngClass]="{ selected: file.preview }"
+        (click)="previewFile($event, file)"
+      >
+        <div
+          class="img-container"
+          *ngIf="!file.deleted && file.isImageType && file.FileAsB64"
+        >
+          <img #img [src]="file.FileAsB64" />
+        </div>
+        <div
+          class="not-supported"
+          *ngIf="!file.deleted && !(file.isImageType && file.FileAsB64)"
+        >
+          <span>
+            {{ file.fileName }}
+          </span>
+        </div>
+        <button
+          type="button"
+          class="btn btn-xs attachment-remove-btn"
+          (click)="removeAttachment($event, file)"
+          *ngIf="!isReadOnly"
+        >
+          Remove
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row attachment mt-2" *ngIf="selectedFile && !selectedFile.deleted">
+  <div class="col-md-12 text-left">
+    <div class="preview-container border-bottom k-form-inline p-0">
+      <span class="preview-header border-top border-bottom my-2">
+        File:
+        {{ selectedFile.fileName }}
+      </span>
+      <div *ngIf="selectedFile.isImageType">
+        <div class="row m-0 mb-2">
+          <img
+            *ngIf="selectedFile.isImageType && selectedFile.FileAsB64"
+            [src]="selectedFile.FileAsB64"
+            class="attachment-preview-img col-md-12 p-0"
+          />
+        </div>
+      </div>
+      <div class="row m-0">
+        <div
+          class="col-md-6 px-0 pl-md-0 pr-md-2"
+          *ngIf="selectedFile.FileAsB64"
+        >
+          <button
+            type="button"
+            class="btn btn-xs attachment-download-btn my-2"
+            (click)="startDownload($event, selectedFile)"
+          >
+            Download
+          </button>
+        </div>
+        <div class="col-md-6 px-0 pr-md-0 pl-md-2">
+          <button
+            type="button"
+            class="btn btn-xs attachment-download-btn my-2"
+            (click)="hidePreview($event, selectedFile)"
+          >
+            Hide Details
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row attachment m-0 capture-img-component" *ngIf="clickImage.show">
+  <div class="col-12">
+    <div class="video">
+      <video #video autoplay></video>
+      <div class="video-actions">
+        <div
+          class="video-options"
+          *ngIf="cameraOptions && cameraOptions.length > 1"
+        >
+          <!-- <select
+            class="custom-select"
+            (change)="onCameraOptionChange($event, $event.target.value)"
+          >
+            <option
+              [value]="option.deviceID"
+              *ngFor="let option of cameraOptions"
+            >
+              {{ option.deviceName }}
+            </option>
+          </select> -->
+        </div>
+        <button
+          type="button"
+          class="btn btn-xs attachment-take-photo-btn photo-button"
+          (click)="doScreenshot($event)"
+        >
+          Click a Photo
+        </button>
+        <button
+          type="button"
+          class="btn btn-xs attachment-take-photo-btn photo-cancel"
+          (click)="cancelCapture($event)"
+        >
+          Cancel
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

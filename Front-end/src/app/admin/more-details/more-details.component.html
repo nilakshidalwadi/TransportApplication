@@ -1,0 +1,268 @@
+<div class="row mb-3">
+  <div class="col-12">
+    <h5>Trip Detail</h5>
+    <div class="card" *ngFor="let trip of tripData">
+      <div class="card-body" *ngIf="trip">
+        <h5><span class="card-title">Rego Number: </span>{{ trip.regoNum }}</h5>
+        <h6 class="mb-2">
+          <span class="card-subtitle">Driver Name: </span>{{ trip.driverName }}
+        </h6>
+        <h6 class="mb-2">
+          <span class="card-subtitle">Job Type: </span>{{ trip.jType }}
+        </h6>
+        <hr />
+        <div class="row m-0 my-2">
+          <span class="float-left col-12 col-md-6 p-0">
+            <span class="font-weight-600">Job start time: </span>
+            {{ trip.sjTime | date: "yyyy-MM-dd HH:mm" }}
+            <span *ngIf="trip.ejTime">
+              <br />
+              <span class="font-weight-600">Job end time: </span>
+            </span>
+            {{ trip.ejTime | date: "yyyy-MM-dd HH:mm" }}
+          </span>
+          <span class="float-right col-12 col-md-6 p-0">
+            <span class="font-weight-600">Total Time (In Hrs): </span>
+            {{ dateHourDifference(trip.ejTime, trip.sjTime) }}
+          </span>
+        </div>
+        <hr />
+        <div class="row m-0 my-2">
+          <span class="float-left col-12 col-md-6 p-0">
+            <span class="font-weight-600">Start KM: </span>
+            {{ numberWithCommas(trip.sKm) }}
+            <span *ngIf="trip.eKm">
+              <br />
+              <span class="font-weight-600">End KM: </span>
+            </span>
+            {{ numberWithCommas(trip.eKm) }}
+          </span>
+          <span *ngIf="trip.eKm" class="float-right col-12 col-md-6 p-0">
+            <span class="font-weight-600">Total KM: </span>
+            {{ numberWithCommas(trip.eKm - trip.sKm) }}
+          </span>
+        </div>
+
+        <hr *ngIf="trip.jobBy == 'Load'" />
+        <div class="row m-0 my-2" *ngIf="trip.jobBy == 'Load'">
+          <span class="float-left col-12 col-md-6 p-0">
+            <span class="font-weight-600">Full Load: </span>
+            {{ trip.fLoad }}
+            <br />
+            <span class="font-weight-600">Load: </span>
+            {{ trip.load }}
+            <br />
+            <span class="font-weight-600">Delivery: </span>
+            {{ trip.delivery }}
+          </span>
+        </div>
+
+        <hr *ngIf="trip.jobBy == 'Pallet'" />
+        <div class="row m-0 my-2" *ngIf="trip.jobBy == 'Pallet'">
+          <span class="font-weight-600 col-12 p-0">
+            Number of Load: {{ lodash.size(palletDetails) || "-" }}
+          </span>
+          <div
+            class="row col-12 m-0 my-2 px-1"
+            *ngFor="let loadDet of lodash.keys(palletDetails)"
+          >
+            <span class="font-weight-600 col-12 p-0">
+              <u>
+                Load {{ loadDet || "-" }} details (Drops:
+                {{ lodash.size(palletDetails[loadDet]) }}):
+              </u>
+            </span>
+            <span
+              class="float-left col-6 col-md-6 p-0 mt-2"
+              *ngFor="let pd of palletDetails[loadDet]"
+            >
+              <span class="font-weight-600">Drop: </span>
+              {{ pd.dropNum }}
+              <br />
+              <span class="font-weight-600">Zone: </span>
+              {{ pd.zone }}
+              <br />
+              <span class="font-weight-600">Dry Pallet: </span>
+              {{ pd.nDpallet }}
+              <br />
+              <span class="font-weight-600">Fridge Pallet: </span>
+              {{ pd.nFpallet }}
+            </span>
+          </div>
+        </div>
+
+        <hr />
+        <span class="float-left col-12 col-md-6 p-0 pb-2">
+          <span class="font-weight-600">Start Time: </span>
+          {{ trip.sTime | date: "yyyy-MM-dd HH:mm" }}
+          <span *ngIf="trip.eTime">
+            <br />
+            <span class="font-weight-600">End Time: </span>
+          </span>
+          {{ trip.eTime | date: "yyyy-MM-dd HH:mm" }}
+        </span>
+        <span class="float-right col-12 col-md-6 p-0">
+          <span class="font-weight-600">Total Time (In Hrs): </span>
+          {{ dateHourDifference(trip.eTime, trip.sTime) }}
+        </span>
+
+        <a
+          *ngIf="!trip.ejTime"
+          class="btn btn-danger text-white float-right"
+          (click)="retrieveTripDetails(trip.tripID)"
+          style="cursor: pointer;"
+        >
+          End Trip
+        </a>
+        <a
+          *ngIf="trip.ejTime"
+          class="m-1 btn btn-primary float-right"
+          [routerLink]="['/edit/trip/', trip.tripID]"
+          style="cursor: pointer;"
+        >
+          Edit Trip
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row mb-3" *ngIf="!declarationChecked">
+  <div class="col-12">
+    <h5>No Declaration</h5>
+  </div>
+</div>
+
+<div class="row mb-3" *ngIf="declarationChecked">
+  <div class="col-12">
+    <h5>Declaration</h5>
+    <table
+      class="card-text text-left table table-borderless"
+      *ngFor="let trip of tripData"
+    >
+      <tr>
+        <td>
+          I,
+          <Span style="text-decoration: underline;">{{ trip.driverName }}</Span>
+          HERE BY DECLARE that I AM FIT FOR DUTY AND ABLE TO MEET MY Below work
+          requirements
+        </td>
+      </tr>
+      <tr>
+        <td>I am medically fit to operate the Equipment/Vehicle</td>
+      </tr>
+      <tr>
+        <td>
+          I have completed the minimum rest required during the last 24 hrs incl
+          continuous 7 hrs. rest period
+        </td>
+      </tr>
+      <tr>
+        <td>
+          I hold a current and valid License for the Equipment/Vehicle
+        </td>
+      </tr>
+      <tr>
+        <td>
+          I am not suffering the effects of Lack of sleep, drugs (Prescription
+          or (illicit) or Alcohol ) that may prevent me from undertaking my work
+          duties
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <div class="form-group">
+            <input
+              type="checkbox"
+              id="defaultCheck1"
+              [(ngModel)]="declarationChecked"
+              [disabled]="true"
+            />
+            <label for="defaultCheck1">
+              &nbsp;I Agree (Declared on {{ tripData[0]["dTime"] }})
+            </label>
+          </div>
+        </td>
+      </tr>
+    </table>
+
+    <h5>Checklist Details</h5>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Sr. No.</th>
+          <th>Question</th>
+          <th>Answer</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let ans of checklistData; let i = index">
+          <th>{{ i + 1 }}</th>
+          <td>{{ ans.que }}</td>
+          <td>{{ ans.ans }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="row mb-3">
+  <div class="col-12">
+    <h5>Images</h5>
+  </div>
+  <div
+    class="col-12 col-md-6 mb-2 text-center"
+    *ngFor="let img of lodash.keys(tripImages); let i = index"
+  >
+    <label class="text-left w-100">
+      {{ i + 1 }}. {{ tripImages[img]["type"] }}:
+      <button
+        type="button"
+        class="btn btn-outline-primary mx-1"
+        (click)="
+          downloadFile(
+            {
+              fileName: tripImages[img]['originalName']
+            },
+            tripImages[img]['fileB64']
+          )
+        "
+      >
+        Download
+      </button>
+      <button
+        type="button"
+        class="btn btn-outline-danger"
+        (click)="delete(img)"
+      >
+        Delete
+      </button>
+    </label>
+    <img
+      [src]="tripImages[img]['file']"
+      *ngIf="tripImages[img]['file'] && tripImages[img]['fType'] == 'img'"
+      style="max-width: 100%;"
+    />
+    <span
+      *ngIf="tripImages[img]['file'] && tripImages[img]['fType'] == 'other'"
+    >
+      <h5>
+        File not supported to open!!! Please download the file.
+      </h5>
+      <button
+        type="button"
+        class="btn btn-outline-primary"
+        (click)="
+          downloadFile(
+            {
+              fileName: tripImages[img]['originalName']
+            },
+            tripImages[img]['fileB64']
+          )
+        "
+      >
+        Download
+      </button>
+    </span>
+  </div>
+</div>

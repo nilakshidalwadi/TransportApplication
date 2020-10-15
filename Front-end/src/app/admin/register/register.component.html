@@ -1,0 +1,110 @@
+<div class="row">
+  <form
+    class="offset-sm-1 col-sm-10"
+    autocomplete="off"
+    [formGroup]="userDetailForm"
+    (ngSubmit)="driver()"
+    *ngIf="userDetailForm"
+  >
+    <div class="form-group">
+      <label for="uName">User name:</label>
+      <input
+        class="form-control"
+        id="uName"
+        formControlName="uName"
+        type="text"
+        placeholder="Username"
+        autofocus=""
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="fName">First name:</label>
+      <input
+        class="form-control"
+        id="fName"
+        formControlName="fName"
+        type="text"
+        placeholder="Firstname"
+        autofocus=""
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="lName">Last name:</label>
+      <input
+        class="form-control"
+        id="lName"
+        formControlName="lName"
+        type="text"
+        placeholder="Lastname"
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="phoneNum">Phone Number:</label>
+      <input
+        class="form-control"
+        id="phoneNum"
+        formControlName="phoneNum"
+        type="text"
+        placeholder="Phonenumber"
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="address">Address:</label>
+      <textarea
+        class="form-control"
+        rows="3"
+        id="address"
+        formControlName="address"
+      ></textarea>
+    </div>
+
+    <div class="form-group">
+      <label for="drivingLicence">Driving Licence Number:</label>
+      <input
+        class="form-control"
+        id="drivingLicence"
+        formControlName="drivingLicence"
+        type="text"
+        placeholder="Drivinglicencenumber"
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="licenceExpiryDate">Licence Expiry Date:</label>
+      <input
+        class="form-control"
+        id="licenceExpiryDate"
+        formControlName="licenceExpiryDate"
+        type="date"
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="inductionExpiryDate">Induction Expiry Date:</label>
+      <input
+        class="form-control"
+        id="inductionExpiryDate"
+        formControlName="inductionExpiryDate"
+        type="date"
+      />
+    </div>
+    <div class="input-file-container w-100">
+      <app-attachments
+        [id]="'userDocs'"
+        (attachmentSelected)="fileChange($event)"
+      ></app-attachments>
+    </div>
+
+    <button
+      class="btn btn-lg btn-primary btn-block"
+      type="submit"
+      [disabled]="!userDetailForm.valid"
+    >
+      {{ userType }}
+    </button>
+  </form>
+</div>

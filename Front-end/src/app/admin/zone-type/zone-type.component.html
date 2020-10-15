@@ -1,0 +1,70 @@
+<div class="row">
+  <form
+    class="offset-sm-1 col-sm-10"
+    autocomplete="off"
+    *ngIf="zoneTypeForm"
+    [formGroup]="zoneTypeForm"
+    (ngSubmit)="addZone()"
+  >
+    <div class="form-group">
+      <label for="zNumber">Zone Number:</label>
+      <input
+        class="form-control"
+        id="zNumber"
+        formControlName="zNumber"
+        type="number"
+        placeholder="Zone Number"
+      />
+    </div>
+    <div class="form-group">
+      <label for="zName">Store Name:</label>
+      <input
+        class="form-control"
+        id="zName"
+        formControlName="zName"
+        type="text"
+        placeholder="Zone Name"
+      />
+    </div>
+    <div class="form-group">
+      <label for="rDpallet">Rate for Dry Pallet (In AUD):</label>
+      <input
+        class="form-control"
+        id="rDpallet"
+        formControlName="rDpallet"
+        type="number"
+        placeholder="Rate for Dry Pallet"
+      />
+    </div>
+    <div class="form-group">
+      <label for="rFpallet">Rate for Fridge Pallet (In AUD):</label>
+      <input
+        class="form-control"
+        id="rFpallet"
+        formControlName="rFpallet"
+        type="number"
+        placeholder="Rate for Fridge Pallet"
+      />
+    </div>
+    <div class="form-group" *ngIf="zID">
+      <input
+        type="checkbox"
+        value=""
+        id="ApplyToAll"
+        formControlName="applyToAll"
+      />
+      <label for="ApplyToAll">
+        &nbsp;Apply to all store in zone
+        {{ zoneTypeForm.get("zNumber").value }}.
+      </label>
+    </div>
+
+    <button
+      class="btn btn-lg btn-primary btn-block"
+      type="submit"
+      [disabled]="!zoneTypeForm.valid"
+    >
+      {{ zoneType }}
+    </button>
+  </form>
+</div>

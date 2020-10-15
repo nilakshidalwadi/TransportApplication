@@ -1,0 +1,23 @@
+<div class="select-container">
+  <input
+    type="text"
+    [id]="customId"
+    [placeholder]="placeholder"
+    [value]="selectedValue"
+    [disabled]="disabled"
+    (click)="showOptions()"
+  />
+  <ul class="select-menu box" role="listbox" *ngIf="expanded">
+    <li
+      role="option"
+      *ngFor="let option of options; let i = index"
+      [id]="customId + '-option-' + i"
+      [title]="option.label"
+      class="option-item"
+      [ngClass]="{ selected: activeItemIndex === i }"
+      (click)="selectItem(option)"
+    >
+      <span> {{ option.label }}</span>
+    </li>
+  </ul>
+</div>

@@ -1,0 +1,59 @@
+<div class="row">
+  <form
+    class="offset-sm-1 col-sm-10"
+    autocomplete="off"
+    [formGroup]="truckForm"
+    (ngSubmit)="addTruck()"
+    *ngIf="truckForm"
+  >
+    <div class="form-group">
+      <label for="regoNum">Rego Number:</label>
+      <input
+        class="form-control"
+        id="regoNum"
+        formControlName="regoNum"
+        type="text"
+        placeholder="Regonumber"
+        autofocus=""
+      />
+    </div>
+    <div class="form-group">
+      <label for="cName">Company name:</label>
+      <input
+        class="form-control"
+        id="cName"
+        formControlName="cName"
+        type="text"
+        placeholder="Companyname"
+      />
+    </div>
+    <div class="form-group">
+      <label for="model">Model:</label>
+      <input
+        class="form-control"
+        id="model"
+        formControlName="model"
+        type="text"
+        placeholder="Model"
+      />
+    </div>
+    <div class="form-group">
+      <label for="maftYear">Manufacturing Year:</label>
+      <input
+        class="form-control"
+        id="maftYear"
+        formControlName="maftYear"
+        type="text"
+        placeholder="Manufacturingyear"
+      />
+    </div>
+
+    <button
+      class="btn btn-lg btn-primary btn-block"
+      type="submit"
+      [disabled]="!truckForm.valid"
+    >
+      {{ truckType }}
+    </button>
+  </form>
+</div>

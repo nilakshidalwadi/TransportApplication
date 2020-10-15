@@ -1,0 +1,378 @@
+<div class="row" *ngIf="!currentTrip.started">
+  <!-- <h1 class="col-12">Add Trip</h1> -->
+
+  <form
+    class="col-12"
+    autocomplete="off"
+    [formGroup]="tripForm"
+    (ngSubmit)="startTrip()"
+  >
+    <div class="form-group">
+      <label for="jType">Job Type:</label>
+      <select class="form-control" formControlName="jType" id="jType">
+        <option *ngFor="let job of jobList" [value]="job.jID">
+          {{ job.jType }}
+        </option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="regoNum">Rego Number:</label>
+      <select class="form-control" formControlName="regoNum" id="regoNum">
+        <option *ngFor="let truck of regoList" [value]="truck.tID">
+          {{ truck.regoNummber }}
+        </option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="oMeter">Odometer Reading:</label>
+      <input
+        class="form-control"
+        id="oMeter"
+        formControlName="oMeter"
+        type="number"
+        placeholder="Odometer Reading"
+      />
+    </div>
+    <div class="form-group">
+      <label for="startOmeterImg">Start Odometer Image:</label>
+
+      <div class="input-file-container w-100">
+        <app-attachments
+          [allowUpload]="auth.isAdmin ? 1 : 0"
+          id="startOdometer"
+          required="true"
+          [fileFilter]="['image']"
+          (attachmentSelected)="fileChange($event, 'startOdometer')"
+        ></app-attachments>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="jTimeStart">Job Start Time:</label>
+      <dl-date-time-picker
+        id="jTimeStart"
+        startView="day"
+        maxView="year"
+        minView="minute"
+        minuteStep="15"
+        formControlName="jTimeStart"
+      >
+      </dl-date-time-picker>
+      <span
+        class="error"
+        *ngIf="
+          tripForm.get('jTimeStart').value < tripForm.get('startDate').value
+        "
+      >
+        Date can not be less than
+        <strong>
+          ({{ toDateTimeString(tripForm.get("startDate").value) }})
+        </strong>
+      </span>
+      <span
+        class="error"
+        *ngIf="
+          tripForm.get('jTimeStart').value > tripForm.get('lastEndtDate').value
+        "
+      >
+        Date can not be more than 24 hours
+        <strong>
+          ({{ toDateTimeString(tripForm.get("lastEndtDate").value) }}),
+        </strong>
+        current selection:
+        <Strong>
+          ({{ toDateTimeString(tripForm.get("jTimeStart").value) }})
+        </Strong>
+      </span>
+    </div>
+    <button
+      class="btn btn-lg btn-primary btn-block"
+      type="submit"
+      [disabled]="isStartFormNotvalid() || busySaving"
+    >
+      Add
+    </button>
+  </form>
+</div>
+
+<div class="row" *ngIf="currentTrip.started">
+  <!-- <h1 class="col-12">Trip Started</h1> -->
+  <form
+    class="offset-sm-1 col-sm-10"
+    autocomplete="off"
+    [formGroup]="tripForm"
+    (ngSubmit)="endTrip()"
+    *ngIf="tripForm"
+  >
+    <div class="form-group">
+      <label for="oMeter">
+        Odometer Reading:
+      </label>
+      <input
+        class="form-control"
+        id="oMeter"
+        formControlName="oMeter"
+        type="number"
+        placeholder="Odometer Reading"
+      />
+      <span
+        class="error"
+        *ngIf="tripForm.get('startKM').value > tripForm.get('oMeter').value"
+      >
+        Reading can not be less than start KM
+        <strong> ({{ tripForm.get("startKM").value }}) </strong>
+      </span>
+    </div>
+    <div class="form-group">
+      <label for="endOmeterImg">End Odometer Image:</label>
+      <div class="input-file-container w-100">
+        <app-attachments
+          [allowUpload]="auth.isAdmin ? 1 : 0"
+          id="endOdometer"
+          required="true"
+          [fileFilter]="['image']"
+          (attachmentSelected)="fileChange($event, 'endOdometer')"
+        ></app-attachments>
+      </div>
+      <span
+        class="error"
+        *ngIf="
+          lodash.keys(lodash.groupBy(uploadedFiles['endOdometer'], 'name'))
+            .length == 0
+        "
+      >
+        please select the end odometer image
+      </span>
+    </div>
+    <div class="form-group">
+      <label for="jobSheetImg">Job Sheet Image: </label>
+      <div class="input-file-container w-100">
+        <app-attachments
+          [allowUpload]="auth.isAdmin ? 1 : 0"
+          id="jobSheet"
+          required="true"
+          [fileFilter]="['image']"
+          (attachmentSelected)="fileChange($event, 'jobSheet')"
+        ></app-attachments>
+      </div>
+      <span
+        class="error"
+        *ngIf="
+          lodash.keys(lodash.groupBy(uploadedFiles['jobSheet'], 'name'))
+            .length == 0
+        "
+      >
+        please select the job sheet image
+      </span>
+    </div>
+    <div class="row" *ngIf="currentTrip.jobBy == 'Load'">
+      <div class="form-group col-4 col-md-4 px-2">
+        <label for="fLoad">Full Load:</label>
+        <input
+          class="form-control"
+          id="fLoad"
+          formControlName="fLoad"
+          type="number"
+          placeholder="Full Load"
+        />
+      </div>
+      <div class="form-group col-4 col-md-4 px-2">
+        <label for="load">Load:</label>
+        <input
+          class="form-control"
+          id="load"
+          formControlName="load"
+          type="number"
+          placeholder="Load"
+        />
+      </div>
+      <div class="form-group col-4 col-md-4 px-2">
+        <label for="delivery"> Delivery:</label>
+        <input
+          class="form-control"
+          id="delivery"
+          formControlName="delivery"
+          type="number"
+          placeholder="Delivery "
+        />
+      </div>
+    </div>
+
+    <div *ngIf="currentTrip.jobBy == 'Pallet'">
+      <div class="form-group">
+        <label for="loadNum">
+          Total Number of Load:
+        </label>
+        <input
+          class="form-control"
+          id="loadNum"
+          formControlName="loadNum"
+          type="number"
+          placeholder="Load Number"
+        />
+        <span
+          class="error"
+          *ngIf="
+            !tripForm.get('loadNum').value || tripForm.get('loadNum').value <= 0
+          "
+        >
+          Total Number of Load can not be Empty or less than 0
+        </span>
+      </div>
+    </div>
+    <div
+      class="container-fluid"
+      formArrayName="palletDetails"
+      *ngIf="currentTrip.jobBy == 'Pallet'"
+    >
+      <div
+        *ngFor="let item of palletDetails.controls; let pointIndex = index"
+        [formGroupName]="pointIndex"
+      >
+        <div class="row">
+          <div class="col-12 px-2 font-weight-bold">
+            <u>Details for load {{ pointIndex + 1 }}:</u>
+          </div>
+        </div>
+        <div class="row">
+          <div class="form-group col-6 px-2">
+            <label for="loadImage mb-0">Pallet Load Sheet Image:</label>
+            <div class="input-file-container w-100">
+              <app-attachments
+                [allowUpload]="auth.isAdmin ? 1 : 0"
+                [id]="'loadImage_' + (pointIndex + 1)"
+                required="true"
+                [fileFilter]="['image']"
+                (attachmentSelected)="
+                  fileChange($event, 'loadImage_' + (pointIndex + 1))
+                "
+              ></app-attachments>
+            </div>
+            <span
+              class="error"
+              *ngIf="
+                lodash.keys(
+                  lodash.groupBy(
+                    uploadedFiles['loadImage_' + (pointIndex + 1)],
+                    'name'
+                  )
+                ).length == 0
+              "
+            >
+              please select the pallet load sheet image
+            </span>
+          </div>
+          <div class="form-group col-6 px-2">
+            <label for="drop_num_{{ pointIndex }}" style="width: 100%;">
+              Total number of Drops:
+              <input
+                class="form-control"
+                id="drop_num_{{ pointIndex }}"
+                formControlName="dropNum"
+                type="number"
+              />
+            </label>
+          </div>
+        </div>
+        <div
+          *ngIf="dropDetails(item.get('groupIndex').value).controls.length != 0"
+          [formGroupName]="'dropDetail'"
+        >
+          <div
+            class="row"
+            *ngFor="
+              let dropItem of dropDetails(item.get('groupIndex').value)
+                .controls;
+              let dropIndex = index
+            "
+            [formGroupName]="dropIndex"
+          >
+            <div class="col-12 px-2">
+              <u>
+                Details for load {{ pointIndex + 1 }} drop {{ dropIndex + 1 }}:
+              </u>
+            </div>
+            <div class="form-group col-6 px-2">
+              <label
+                for="nd_pallet_{{ pointIndex }}_{{ dropIndex }}"
+                style="width: 100%;"
+              >
+                Dry Pallet:
+                <input
+                  class="form-control"
+                  id="nd_pallet_{{ pointIndex }}_{{ dropIndex }}"
+                  formControlName="nDpallet"
+                  type="number"
+                />
+              </label>
+            </div>
+            <div class="form-group col-6 px-2">
+              <label
+                for="nf_pallet_{{ pointIndex }}_{{ dropIndex }}"
+                style="width: 100%;"
+              >
+                Fridge Pallet:
+                <input
+                  class="form-control"
+                  id="nf_pallet_{{ pointIndex }}_{{ dropIndex }}"
+                  formControlName="nFpallet"
+                  type="number"
+                />
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="jTimeStart">Job End Time:</label>
+      <dl-date-time-picker
+        id="jTimeStart"
+        startView="day"
+        maxView="year"
+        minView="minute"
+        minuteStep="15"
+        formControlName="jTimeStart"
+      >
+      </dl-date-time-picker>
+      <span
+        class="error"
+        *ngIf="
+          tripForm.get('startDate').value > tripForm.get('jTimeStart').value
+        "
+      >
+        Date can not be less than start date
+        <strong>
+          ({{ toDateTimeString(tripForm.get("startDate").value) }}),
+        </strong>
+        current selection:
+        <Strong>
+          ({{ toDateTimeString(tripForm.get("jTimeStart").value) }})
+        </Strong>
+      </span>
+      <span
+        class="error"
+        *ngIf="
+          tripForm.get('jTimeStart').value > tripForm.get('lastEndtDate').value
+        "
+      >
+        Date can not be more than 24 hours
+        <strong>
+          ({{ toDateTimeString(tripForm.get("lastEndtDate").value) }}),
+        </strong>
+        current selection:
+        <Strong>
+          ({{ toDateTimeString(tripForm.get("jTimeStart").value) }})
+        </Strong>
+      </span>
+    </div>
+    <button
+      class="btn btn-md btn-danger btn-block"
+      type="submit"
+      [disabled]="isEndFormNotvalid() || busySaving"
+    >
+      End Trip
+    </button>
+  </form>
+</div>

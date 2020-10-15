@@ -1,0 +1,80 @@
+<div class="row">
+  <form
+    class="offset-sm-1 col-sm-10"
+    autocomplete="off"
+    *ngIf="jobTypeForm"
+    [formGroup]="jobTypeForm"
+    (ngSubmit)="addJob()"
+  >
+    <div class="form-group">
+      <label for="jType">Job Type:</label>
+      <input
+        class="form-control"
+        id="jType"
+        formControlName="jType"
+        type="text"
+        placeholder="Job Type"
+      />
+    </div>
+    <div class="form-group">
+      <label for="reportBy">
+        Report By:
+      </label>
+      <div class="custom-control custom-radio">
+        <input
+          type="radio"
+          id="byHrs"
+          class="custom-control-input"
+          formControlName="reportBy"
+          value="Hours"
+        />
+        <label class="custom-control-label" for="byHrs">
+          Hours
+        </label>
+      </div>
+      <div class="custom-control custom-radio">
+        <input
+          type="radio"
+          id="byKms"
+          class="custom-control-input"
+          formControlName="reportBy"
+          value="Kilometers"
+        />
+        <label class="custom-control-label" for="byKms">
+          Kilometers
+        </label>
+      </div>
+      <div class="custom-control custom-radio">
+        <input
+          type="radio"
+          id="byPallet"
+          class="custom-control-input"
+          formControlName="reportBy"
+          value="Pallet"
+        />
+        <label class="custom-control-label" for="byPallet">
+          Pallet
+        </label>
+      </div>
+      <div class="custom-control custom-radio">
+        <input
+          type="radio"
+          id="byLoad"
+          class="custom-control-input"
+          formControlName="reportBy"
+          value="Load"
+        />
+        <label class="custom-control-label" for="byLoad">
+          Load
+        </label>
+      </div>
+    </div>
+    <button
+      class="btn btn-lg btn-primary btn-block"
+      type="submit"
+      [disabled]="!jobTypeForm.valid"
+    >
+      {{ jobType }}
+    </button>
+  </form>
+</div>

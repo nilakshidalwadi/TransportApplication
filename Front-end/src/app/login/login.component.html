@@ -1,0 +1,50 @@
+<div style="height: 100vh;">
+  <div class="alert alert-danger alert-dismissable" role="alert" *ngIf="error">
+    {{ error }}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="row">
+    <form
+      class="offset-sm-1 col-sm-10 form-signin"
+      autocomplete="off"
+      [formGroup]="userForm"
+      (ngSubmit)="login()"
+    >
+      <!-- <h1 class="h3 mb-3 text-center font-weight-normal">JK Sandhu</h1> -->
+      <div class="text-center">
+        <img src="assets\icons\icon-128x128.png" class="logo-img" />
+      </div>
+
+      <div class="form-group">
+        <label for="userId">Username:</label>
+        <input
+          class="form-control"
+          id="userId"
+          formControlName="userId"
+          type="text"
+          placeholder="Username"
+          autofocus=""
+        />
+      </div>
+      <div class="form-group">
+        <label for="password">Password:</label>
+        <input
+          class="form-control"
+          id="password"
+          formControlName="password"
+          type="password"
+          placeholder="Password"
+        />
+      </div>
+      <button
+        class="btn btn-lg btn-primary btn-block"
+        type="submit"
+        [disabled]="!userForm.valid"
+      >
+        Log in
+      </button>
+    </form>
+  </div>
+</div>

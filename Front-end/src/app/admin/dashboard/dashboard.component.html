@@ -1,0 +1,92 @@
+<h1 class="text-center" *ngIf="tripList.length == 0">
+  There are no trips recorded
+</h1>
+<div class="card-columns">
+  <div
+    class="card"
+    [ngClass]="{
+      'text-white': !trip.eTime || trip.anyDamage,
+      'bg-info': !trip.eTime && !trip.anyDamage,
+      'bg-light': trip.eTime && !trip.anyDamage,
+      'bg-secondary': trip.anyDamage
+    }"
+    *ngFor="let trip of tripList"
+  >
+    <div class="card-body">
+      <h5 class="card-title">{{ trip.regoNum }}</h5>
+      <h6
+        class="card-subtitle mb-2 "
+        [ngClass]="{
+          'text-muted': trip.eTime
+        }"
+      >
+        {{ trip.driverName }}
+      </h6>
+      <div class="row m-0 my-2">
+        <span class="float-left col-12 col-md-6 p-0">
+          Job start time: {{ trip.sjTime | date: "yyyy-MM-dd HH:mm" }}
+          <span *ngIf="trip.ejTime">
+            <br />
+            Job end time:
+          </span>
+          {{ trip.ejTime | date: "yyyy-MM-dd HH:mm" }}
+        </span>
+        <span class="float-right col-12 col-md-6 p-0">
+          Total Time (In Hrs):
+          {{ dateHourDifference(trip.ejTime, trip.sjTime) }}
+        </span>
+      </div>
+      <div class="row m-0 my-2">
+        <span class="float-left col-12 col-md-6 p-0">
+          Start KM: {{ numberWithCommas(trip.sKm) }}
+          <span *ngIf="trip.eKm">
+            <br />
+            End KM:
+          </span>
+          {{ numberWithCommas(trip.eKm) }}
+        </span>
+        <span *ngIf="trip.eKm" class="float-right col-12 col-md-6 p-0">
+          Total KM:
+          {{ numberWithCommas(trip.eKm - trip.sKm) }}
+        </span>
+      </div>
+      <a
+        *ngIf="!trip.ejTime"
+        class="btn btn-danger float-right"
+        (click)="retrieveTripDetails(trip.tripID)"
+        style="cursor: pointer;"
+      >
+        End Trip
+      </a>
+      <a
+        [routerLink]="['/trip/detail/', trip.tripID]"
+        class="card-link"
+        [ngClass]="{
+          'text-white': !trip.eTime || trip.anyDamage,
+          'text-decoration-underline': !trip.eTime || trip.anyDamage
+        }"
+      >
+        More Details
+      </a>
+    </div>
+    <div
+      class="card-footer"
+      [ngClass]="{
+        'text-muted': trip.eTime && !trip.anyDamage
+      }"
+    >
+      <span class="float-left col-12 col-md-6 p-0 pb-2">
+        Start Time: {{ trip.sTime | date: "yyyy-MM-dd HH:mm" }}
+        <span *ngIf="trip.eTime">
+          <br />
+          End Time:
+        </span>
+        {{ trip.eTime | date: "yyyy-MM-dd HH:mm" }}
+      </span>
+      <span class="float-right col-12 col-md-6 p-0">
+        Total Time (In Hrs):
+        {{ dateHourDifference(trip.eTime, trip.sTime) }}
+      </span>
+    </div>
+  </div>
+</div>

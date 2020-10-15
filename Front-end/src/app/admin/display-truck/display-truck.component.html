@@ -1,0 +1,63 @@
+<div class="row mb-2">
+  <div class="col-12 text-right">
+    <button type="button" (click)="add()" class="btn m-1 btn-outline-primary">
+      Add Truck
+    </button>
+  </div>
+</div>
+<div class="row">
+  <div class="col-12">
+    <table
+      #dtTableElement
+      class="table table-striped table-bordered m-0"
+      datatable
+      [dtOptions]="dtOptions"
+      [dtTrigger]="dtTrigger"
+      style="width: 100%;"
+    >
+      <thead>
+        <tr>
+          <th>Rego Number</th>
+          <th>Company Name</th>
+          <th>Model</th>
+          <th>Manufacturing Year</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let truck of trucksList">
+          <td>{{ truck.regoNum }}</td>
+          <td>{{ truck.cName }}</td>
+          <td>{{ truck.model }}</td>
+          <td>{{ truck.maftYear }}</td>
+          <td>
+            <button
+              type="button"
+              [attr.update-truck]="truck.tID"
+              class="btn m-1 btn-outline-info"
+              [disabled]="!truck.inUse"
+            >
+              Edit
+            </button>
+            <button
+              type="button"
+              [attr.delete-truck]="truck.tID"
+              class="btn m-1 btn-outline-danger"
+              *ngIf="truck.inUse"
+            >
+              Delete
+            </button>
+            <button
+              type="button"
+              [attr.active-truck]="truck.tID"
+              class="btn m-1 btn-outline-success"
+              *ngIf="!truck.inUse"
+            >
+              Active
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

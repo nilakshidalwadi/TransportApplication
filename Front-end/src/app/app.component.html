@@ -1,0 +1,12 @@
+<div class="container-fluid p-0">
+  <app-menu-bar></app-menu-bar>
+</div>
+<div class="container-fluid">
+  <app-loader></app-loader>
+  <app-alert
+    class="mt-3"
+    *ngIf="router.url != '/login' && router.url != '/home'"
+  ></app-alert>
+  <app-confirmation-dialogue></app-confirmation-dialogue>
+  <router-outlet></router-outlet>
+</div>

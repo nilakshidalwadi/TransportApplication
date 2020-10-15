@@ -1,0 +1,63 @@
+<div class="row mb-2">
+  <div class="form-group col-12 col-md-4">
+    <label for="reportBy">Filter By:</label>
+    <select
+      class="form-control"
+      [(ngModel)]="serviceByFilter"
+      (change)="filterService()"
+      id="reportBy"
+    >
+      <option *ngFor="let rb of reportBy" [value]="rb">
+        {{ rb }}
+      </option>
+    </select>
+  </div>
+  <div class="col-12 col-md-8 text-right">
+    <button
+      type="button"
+      (click)="addService()"
+      class="btn m-1 btn-outline-primary"
+    >
+      Add TruckService
+    </button>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-12">
+    <table
+      #dtTableElement
+      class="table table-striped table-bordered m-0"
+      datatable
+      [dtOptions]="dtOptions"
+      [dtTrigger]="dtTrigger"
+      style="width: 100%;"
+    >
+      <tbody>
+        <tr *ngFor="let service of filteredServiceList">
+          <td *ngFor="let c of dtOptions.columns">
+            <span *ngIf="c.type === 1">{{ service[c.data] }}</span>
+
+            <span *ngIf="c.type === 2">
+              <button
+                type="button"
+                [attr.update-service]="service.tsID"
+                class="btn m-1 btn-outline-info"
+                [disabled]="!service.truckInUse"
+              >
+                Edit
+              </button>
+              <button
+                type="button"
+                [attr.delete-service]="service.tsID"
+                class="btn m-1 btn-outline-danger"
+              >
+                Delete
+              </button>
+            </span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

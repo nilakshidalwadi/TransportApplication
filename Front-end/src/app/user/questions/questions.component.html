@@ -1,0 +1,62 @@
+<div class="row ">
+  <div class="col-12 ">
+    <form class="px-2" *ngIf="questionList.length > 0 && typeList.length > 0">
+      <div class="form-group" *ngFor="let que of questionList; let i = index">
+        <label class="que_label">{{ i + 1 }}. {{ que.que }}</label>
+        <br />
+        <div *ngIf="que.queType !== 3">
+          <div
+            class="custom-control custom-radio custom-control-inline"
+            *ngFor="let x of getQuestion(que.queType); let j = index"
+          >
+            <input
+              type="radio"
+              id="que{{ que.qID }}_{{ j }}"
+              class="custom-control-input"
+              name="que_{{ que.qID }}"
+              [value]="x"
+              [(ngModel)]="answers[que.qID]"
+            />
+            <label class="custom-control-label" for="que{{ que.qID }}_{{ j }}">
+              {{ x }}
+            </label>
+          </div>
+          <div
+            class="custom-file mt-2"
+            *ngIf="
+              que.imgReq &&
+              (answers[que.qID] || '').toLowerCase() ==
+                (que.imgReq || '').toLowerCase()
+            "
+          >
+            <div class="input-file-container w-100">
+              <app-attachments
+                [id]="que.qID"
+                required="true"
+                [fileFilter]="['image']"
+                (attachmentSelected)="fileChange($event, que.qID)"
+              ></app-attachments>
+            </div>
+          </div>
+        </div>
+        <div class="" *ngIf="que.queType === 3">
+          <input
+            class="form-control"
+            type="text"
+            name="que_{{ que.qID }}"
+            [(ngModel)]="answers[que.qID]"
+          />
+        </div>
+      </div>
+      <button
+        class="btn btn-md btn-primary mb-3"
+        style="nav-left: auto"
+        type="submit"
+        [disabled]="isFormNotvalid()"
+        (click)="updateAnswers()"
+      >
+        Submit
+      </button>
+    </form>
+  </div>
+</div>

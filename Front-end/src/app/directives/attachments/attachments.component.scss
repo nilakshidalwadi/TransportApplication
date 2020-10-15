@@ -1,0 +1,347 @@
+.attachment .upload {
+  font-weight: bold;
+  color: #28a745;
+  margin-left: 15px;
+  line-height: 36px;
+}
+
+.attachment .hlink {
+  font-size: 0.75em;
+  color: #39d2b4;
+  font-style: italic;
+  text-decoration-line: none;
+  cursor: pointer;
+}
+
+.attachment .no-attachments {
+  color: #39d2b4;
+  font-style: italic;
+}
+
+.attachment .error {
+  color: #dc3545;
+}
+
+.attachment .progress {
+  margin-top: 5px;
+}
+
+.attachment .progress-bar {
+  background-color: #39d2b4;
+}
+
+.attachment .dragarea {
+  font-size: 1rem;
+  border: 2px dashed #39d2b4;
+  border-radius: 5px;
+  padding: 1rem;
+  color: #00205b;
+  cursor: pointer;
+}
+.attachment .dragarea.hover {
+  border-style: solid;
+}
+.attachment .upload-container .dragarea.hover {
+  opacity: 0.5;
+}
+
+.attachment .invalid-file {
+  border-color: #dc3545;
+}
+
+/* Horizontal scroll */
+.attachment .scrolling-wrapper {
+  overflow-x: auto;
+  overflow-y: hidden;
+  white-space: nowrap;
+
+  .attachment .card {
+    display: inline-block;
+  }
+}
+
+.attachment .scrolling-wrapper-flexbox {
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+
+  .attachment .card {
+    flex: 0 0 auto;
+    margin-right: 3px;
+  }
+}
+
+.attachment .card {
+  width: 180px;
+  height: auto;
+  line-height: 100px;
+  overflow: hidden;
+  border: 0px;
+  background-color: rgba(122, 125, 128, 0.3);
+  cursor: pointer;
+  display: inline-block;
+}
+
+.attachment .scrolling-wrapper,
+.attachment .scrolling-wrapper-flexbox {
+  width: 100%;
+  -webkit-overflow-scrolling: touch;
+  &::-webkit-scrollbar {
+    display: block;
+  }
+  &::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+    background-color: #f5f5f5;
+  }
+
+  &::-webkit-scrollbar {
+    width: 12px;
+    background-color: #f5f5f5;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    background-color: #00205b;
+  }
+}
+
+.attachment .card .img-container,
+.attachment .card .not-supported {
+  width: 100%;
+  max-height: 100px;
+  vertical-align: middle;
+}
+
+.attachment .card img {
+  width: 100%;
+}
+
+.attachment .card.selected {
+  border: 1px solid #00205b;
+}
+
+.attachment .not-supported {
+  color: rgba(122, 125, 128, 1);
+  text-overflow: ellipsis;
+  text-transform: uppercase;
+  text-align: center;
+  font-size: 0.9rem;
+  font-weight: 400;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.attachment-remove-btn {
+  width: 100%;
+  height: 30px;
+  position: relative;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  padding: 0px;
+  border-radius: 0px;
+  background-color: #39d2b4;
+  border-color: #39d2b4;
+  color: #ffffff;
+  display: block;
+}
+
+.attachment-remove-btn:hover,
+.attachment-take-photo-btn:hover {
+  background-color: #00205b;
+  border-color: #00205b;
+  color: #ffffff;
+}
+
+.attachment-take-photo-btn {
+  width: 100%;
+  /*padding: 1rem;*/
+  font-size: 1rem;
+  background-color: #39d2b4;
+  border-color: #39d2b4;
+  color: #ffffff;
+  display: block;
+}
+
+.relative .attachment-take-photo-btn {
+  position: relative;
+  top: 50%;
+  transform: translatey(-50%);
+}
+
+.attachment .permission-error {
+  font-weight: 600;
+  color: red;
+  font-style: italic;
+}
+
+/* Attachment Preview */
+.preview-container {
+}
+
+.attachment .preview-container.border-bottom,
+.attachment .preview-container .border-bottom {
+  border-bottom: 1px dashed #00205b !important;
+}
+
+.attachment .preview-container.border-top,
+.attachment .preview-container .border-top {
+  border-top: 1px dashed #00205b !important;
+}
+
+.attachment .preview-header {
+  font-size: 1rem;
+  color: #00205b;
+  padding: 0.5rem 0;
+  display: block;
+  font-weight: 400;
+}
+
+.attachment-preview-img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.attachment-download-btn {
+  width: 100%;
+  background-color: #39d2b4;
+  border-color: #39d2b4;
+  color: #ffffff;
+  display: block;
+}
+
+.attachment-download-btn:hover,
+.attachment .latlong-clear-btn:hover {
+  background-color: #00205b;
+  border-color: #00205b;
+  color: #ffffff;
+}
+
+.latlong-clear-btn {
+  width: 100%;
+  background-color: #39d2b4;
+  border-color: #39d2b4;
+  color: #ffffff;
+}
+
+.attachment
+  .preview-container.k-form-inline
+  .k-form-field
+  > span:not(.k-widget) {
+  width: auto;
+}
+
+.attachment .inline-flex {
+  display: inline-flex !important;
+}
+
+/* icons */
+.k-download,
+.k-trash,
+.k-hide,
+.k-gps,
+.k-camera,
+.k-cancel {
+  color: white;
+  display: inline-flex;
+  justify-content: center;
+  vertical-align: middle;
+  position: relative;
+  /* right: -8px; */
+  top: 0;
+  margin: 0;
+  padding: 0;
+}
+
+.k-download::before {
+  content: "\f019";
+  font-family: FontAwesome;
+}
+
+.k-trash::before {
+  content: "\f014";
+  font-family: FontAwesome;
+}
+
+.k-hide::before {
+  content: "\f070";
+  font-family: FontAwesome;
+}
+
+.k-gps::before {
+  content: "\f124";
+  font-family: FontAwesome;
+}
+
+.k-camera::before {
+  content: "\f030";
+  font-family: FontAwesome;
+}
+
+.k-cancel::before {
+  content: "\f00d";
+  font-family: FontAwesome;
+}
+
+/* Take an image */
+.attachment.capture-img-component {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #000;
+  z-index: 111111;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.attachment.capture-img-component video {
+  width: 100%;
+  max-height: 90vh;
+}
+
+.attachment.capture-img-component .video-actions {
+  margin: 0 auto;
+  position: fixed;
+  bottom: 0;
+  right: 10px;
+  left: 10px;
+}
+
+.attachment.capture-img-component .video-options {
+  position: fixed;
+  bottom: 0;
+}
+
+.attachment.capture-img-component .photo-button,
+.attachment.capture-img-component .photo-cancel {
+  // max-width: 50%;
+  display: block;
+  margin: 10px auto;
+  transform: none;
+  -ms-transform: none;
+}
+
+.attachment.capture-img-component .photo-cancel {
+  background-color: #dc3545;
+  border-color: #dc3545;
+}
+
+.attachment.capture-img-component .video {
+  position: fixed;
+  margin: 0 auto;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  /*
+  top: 50%;
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+  */
+}
